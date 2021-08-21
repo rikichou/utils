@@ -82,7 +82,7 @@ class ScnFacialExpressionCat(object):
         pred_label = torch.argmax(outputs, 1).item()
         scores = self.m(outputs).cpu().detach().squeeze().numpy()
 
-        return pred_label, scores[int(pred_label)]
+        return pred_label, scores[int(pred_label)], self.facial_label_to_name(int(pred_label))
 
     def get_input_face(self, image, rect):
         sx,sy,ex,ey = rect
