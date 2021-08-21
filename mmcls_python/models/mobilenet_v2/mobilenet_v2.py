@@ -1,16 +1,33 @@
-_base_ = [
-    '../_base_/models/mobilenet_v2_1x.py',
-    '../_base_/default_runtime.py'
-]
-
 model = dict(
+    type='ImageClassifier',
+    backbone=dict(type='MobileNetV2', widen_factor=1.0),
+    neck=dict(type='GlobalAveragePooling'),
     pretrained=None,
     head=dict(
         type='LinearClsHead',
         num_classes=4,
         in_channels=1280,
         loss=dict(type='CrossEntropyLoss', loss_weight=1.0),
+        topk=(1, 5),
     ))
+
+# checkpoint saving
+checkpoint_config = dict(interval=1)
+# yapf:disable
+log_config = dict(
+    interval=100,
+    hooks=[
+        dict(type='TextLoggerHook'),
+        # dict(type='TensorboardLoggerHook')
+    ])
+# yapf:enable
+
+dist_params = dict(backend='nccl')
+log_level = 'INFO'
+resume_from = None
+workflow = [('train', 1)]
+
+
 load_from = '/media/ruiming/data/workspace/pro/source/mmclassification/pretrained_model/mobilenetv2_imagenet/mobilenet_v2_batch256_imagenet_20200708-3b2dc3af.pth'
 
 dataset_type = 'AffectNet'
