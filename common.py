@@ -20,7 +20,7 @@ def read_lists_from_txtfile(file_path):
     infos = []
     with open(file_path, 'r') as fp:
         for line in fp.readlines():
-            info = [float(x) for x in line.strip().split(';')]
+            info = [int(float(x)) for x in line.strip().split(';')]
             infos.append(info)
     return infos
 
