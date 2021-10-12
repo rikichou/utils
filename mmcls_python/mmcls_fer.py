@@ -6,10 +6,11 @@ import cv2
 dir_label_map = {0:'Angry', 1:'Happy', 2:'Neutral', 3:'Sad'}
 
 class MMCLSFer(object):
-    def __init__(self, config_file_path='models/mobilenet_v2/mobilenet_v2.py', ckpt_path='models/mobilenet_v2/latest.pth', device='cpu'):
+    def __init__(self, config_file_path='models/mobilenet_v2/mobilenet_v2.py', ckpt_path='models/mobilenet_v2/latest.pth', device='cpu', input_channels=3):
         """
         mmcls facial expression
         """
+        self.input_channels = input_channels
         self.model = init_model(config_file_path, ckpt_path, device=device)
         self.model.CLASSES = list(dir_label_map)
 
@@ -42,6 +43,9 @@ class MMCLSFer(object):
         :return: [[sx,sy,ex,ey,prob], [...]]
         """
         image_face, isx, isy, iex, iey = self.get_input_face(image, face_rect)
+
+        if self.input_channels==1:
+            image_face = cv2.cvtColor(image_face, cv2.COLOR_BGR2GRAY)
 
         # inference image with
         result = inference_model(self.model, image_face, face_rect=None)
