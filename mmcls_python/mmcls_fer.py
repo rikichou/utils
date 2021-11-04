@@ -3,7 +3,7 @@ import os
 from mmcls.apis import inference_model, init_model, show_result_pyplot
 import cv2
 
-dir_label_map = {0:'Angry', 1:'Happy', 2:'Neutral', 3:'Sad'}
+dir_label_map = {0:'Angry', 1:'Happy', 2:'Neutral', 3:'Sad', 4:'Surprise'}
 
 class MMCLSFer(object):
     def __init__(self, config_file_path='models/mobilenet_v2/mobilenet_v2.py', ckpt_path='models/mobilenet_v2/latest.pth', device='cpu', input_channels=3):
